@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B75A06A6-E09D-43F1-9568-A9966D2F7340}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>blff</RootNamespace>
+    <AssemblyName>blffconsole</AssemblyName>
+    <!--ProjectFolderName: custom, to override AssemblyName when packaging on release-->
+    <ProjectFolderName>Blff.Console</ProjectFolderName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>..\Blff.Resources\icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release-NoZip|x86'">
+    <OutputPath>bin\x86\Release-NoZip\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blff.cs" />
+    <Compile Include="..\Blff.Resources\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Blff.Lib\Blff.Lib.csproj">
+      <Project>{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}</Project>
+      <Name>Blff.Lib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--Actions to perform prior to building all builds-->
+  <Target Name="BeforeBuild">
+    <PropertyGroup>
+      <DistributionPackagePath>bin\DistPackage</DistributionPackagePath>
+      <MergedExePath>bin\Release\merged</MergedExePath>
+    </PropertyGroup>
+    <!--Remove the merged exe and distribution directories-->
+    <RemoveDir Directories="$(MergedExePath)" />
+    <RemoveDir Directories="$(DistributionPackagePath)" />
+  </Target>
+  <!--Actions to perform only for release builds-->
+  <Target Name="AfterBuild" Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PropertyGroup>
+      <MergedExePath>bin\Release\merged</MergedExePath>
+    </PropertyGroup>
+    <!--Get the version number of the assembly (only interested in the major and minor numbers, not build nor revision numbers)-->
+    <GetAssemblyIdentity AssemblyFiles="$(TargetDir)$(TargetFileName)">
+      <Output TaskParameter="Assemblies" ItemName="AssemblyVersion" />
+    </GetAssemblyIdentity>
+    <PropertyGroup>
+      <Pattern>(\d+)\.(\d+)</Pattern>
+      <In>%(AssemblyVersion.Version)</In>
+      <AppVersion>$([System.Text.RegularExpressions.Regex]::Match($(In), $(Pattern)))</AppVersion>
+    </PropertyGroup>
+    <!--Create the merged exe directory-->
+    <Message Importance="high" Text="Creating merged executable directory at $(SolutionDir)$(ProjectFolderName)\$(MergedExePath)" />
+    <MakeDir Directories="$(MergedExePath)\blff" />
+    <PropertyGroup>
+      <!--Target .NET 4.6.1-->
+      <ReferenceAssemblies>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6.1</ReferenceAssemblies>
+    </PropertyGroup>
+    <!--Run ILMerge-->
+    <Message Importance="high" Text="Statically linking dependencies with ILMerge on target platform using referenced assemblies from $(ReferenceAssemblies)" />
+    <!--Console application: /target:exe-->
+    <Exec Command="&quot;$(SolutionDir)packages\ilmerge.2.14.1208\tools\ILMerge.exe&quot; /out:&quot;$(SolutionDir)$(ProjectFolderName)\$(MergedExePath)\blff\$(TargetFileName)&quot; &quot;$(TargetDir)$(TargetFileName)&quot; &quot;$(TargetDir)*.dll&quot; /target:exe /targetplatform:v4,&quot;$(ReferenceAssemblies)&quot; /ndebug /wildcards" />
+    <!--Zip the merged exe directory-->
+    <Message Importance="high" Text="Packaging version $(AppVersion) release as zip file: $(SolutionDir)$(ProjectFolderName)\$(DistributionPackagePath)\blff_console-v$(AppVersion).zip" />
+    <ItemGroup>
+      <FilesToZip Include="$(MergedExePath)\**\*.*" />
+    </ItemGroup>
+    <Zip Files="@(FilesToZip)" WorkingDirectory="$(MergedExePath)" ZipFileName="$(DistributionPackagePath)\blff_console-v$(AppVersion).zip" ZipLevel="9" />
+    <!--Remove merged exe directory-->
+    <Message Importance="high" Text="Removing merged executable directory" />
+    <RemoveDir Directories="$(SolutionDir)$(ProjectFolderName)\$(MergedExePath)" />
+  </Target>
+  <Import Project="..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets" Condition="Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSBuildTasks.1.5.0.235\build\MSBuildTasks.targets'))" />
+  </Target>
+</Project>

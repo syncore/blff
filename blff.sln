@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blff.Lib", "Blff.Lib\Blff.Lib.csproj", "{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blff.Console", "Blff.Console\Blff.Console.csproj", "{B75A06A6-E09D-43F1-9568-A9966D2F7340}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blff.Win", "Blff.Win\Blff.Win.csproj", "{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+		Release-NoZip|x86 = Release-NoZip|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}.Debug|x86.ActiveCfg = Release|x86
+		{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}.Debug|x86.Build.0 = Release|x86
+		{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}.Release|x86.ActiveCfg = Release|x86
+		{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}.Release|x86.Build.0 = Release|x86
+		{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}.Release-NoZip|x86.ActiveCfg = Release-NoZip|x86
+		{A8CFE60B-4F4A-44DF-94F3-5BEEF98A3FF6}.Release-NoZip|x86.Build.0 = Release-NoZip|x86
+		{B75A06A6-E09D-43F1-9568-A9966D2F7340}.Debug|x86.ActiveCfg = Release|x86
+		{B75A06A6-E09D-43F1-9568-A9966D2F7340}.Debug|x86.Build.0 = Release|x86
+		{B75A06A6-E09D-43F1-9568-A9966D2F7340}.Release|x86.ActiveCfg = Release|x86
+		{B75A06A6-E09D-43F1-9568-A9966D2F7340}.Release|x86.Build.0 = Release|x86
+		{B75A06A6-E09D-43F1-9568-A9966D2F7340}.Release-NoZip|x86.ActiveCfg = Release-NoZip|x86
+		{B75A06A6-E09D-43F1-9568-A9966D2F7340}.Release-NoZip|x86.Build.0 = Release-NoZip|x86
+		{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}.Debug|x86.ActiveCfg = Release|x86
+		{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}.Debug|x86.Build.0 = Release|x86
+		{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}.Release|x86.ActiveCfg = Release|x86
+		{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}.Release|x86.Build.0 = Release|x86
+		{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}.Release-NoZip|x86.ActiveCfg = Release-NoZip|x86
+		{7C9ACE49-164C-44C8-A54E-D08BC39EF3F7}.Release-NoZip|x86.Build.0 = Release-NoZip|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9DDED439-A7B2-4399-99B0-117F9C9FEEBE}
+	EndGlobalSection
+EndGlobal
