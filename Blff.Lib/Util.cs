@@ -5,6 +5,8 @@ namespace blff
 {
     public static class Util
     {
+        public static bool LogErrors;
+
         public static void Message(string tag, string msgType, string msg)
         {
             Console.WriteLine($"{(string.IsNullOrWhiteSpace(tag) ? string.Empty : $"{tag} ")}" +
@@ -13,8 +15,11 @@ namespace blff
 
         public static string Tag(string tag) => $"{tag.ToUpper()}\t";
 
-        public static void LogError(string error) => WriteFile($"{DateTime.Now.ToShortTimeString()}\t[ERROR]\t{error}",
-            LibBlff.ErrorLog, true);
+        public static void LogError(string error)
+        {
+            if (LogErrors)
+                WriteFile($"{DateTime.Now.ToShortTimeString()}\t[ERROR]\t{error}", LibBlff.ErrorLog, true);
+        }
 
         public static void WriteFile(string content, string fileName, bool append = false)
         {

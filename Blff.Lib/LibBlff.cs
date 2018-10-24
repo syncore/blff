@@ -15,6 +15,7 @@ namespace blff
         private const string FPipe = "-p=";
         private const string FWriteFile = "-f=";
         private const string FTest = "-t";
+        private const string FLogError = "-e";
 
         private static int _delay = Finder.DelayDefault;
         private static int _retries = Finder.RetryDefault;
@@ -70,8 +71,11 @@ namespace blff
                 _writeFile = true;
             }
 
-            if (args.Any(a => a.Contains(FTest)))
+            if (args.Any(a => a.Contains(FTest.ToLowerInvariant())))
                 _isTestMode = true;
+
+            if (args.Any(a => a.Contains(FLogError.ToLowerInvariant())))
+                Util.LogErrors = true;
         }
 
         private static int ParseIntFlag(string val, string flag, int defaultVal, int minVal)
